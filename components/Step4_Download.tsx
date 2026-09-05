@@ -55,21 +55,30 @@ export default function Step4_Download({
               <dd className="text-slate-700">Request for Information under RTI Act 2005</dd>
             </div>
           </dl>
-          <button
-            type="button"
-            onClick={() =>
-              buildRTIPdf({
-                applicant,
-                body,
-                department,
-                jurisdiction,
-                pio,
-              })
-            }
-            className="mt-6 w-full rounded-md bg-[#FF9933] px-5 py-3 text-sm font-bold text-[#0F2044] shadow-sm transition hover:bg-[#ffad5c]"
-          >
-            Download PDF
-          </button>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={() =>
+                buildRTIPdf({
+                  applicant,
+                  body,
+                  department,
+                  jurisdiction,
+                  pio,
+                })
+              }
+              className="flex-1 rounded-md bg-[#FF9933] px-5 py-3 text-center text-sm font-bold text-[#0F2044] shadow-sm transition hover:bg-[#ffad5c]"
+            >
+              Download PDF
+            </button>
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="rounded-md border border-slate-300 px-5 py-3 text-sm font-semibold text-[#0F2044] transition hover:bg-slate-50"
+            >
+              Print page
+            </button>
+          </div>
         </div>
 
         <aside className="rounded-md border border-orange-200 bg-orange-50 p-5">

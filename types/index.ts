@@ -29,6 +29,7 @@ export interface GenerateRTIRequest {
   jurisdiction: string;
   applicantName?: string;
   applicantAddress?: string;
+  language?: "en" | "hi";
 }
 
 export interface PDFPayload {

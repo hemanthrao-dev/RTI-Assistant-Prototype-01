@@ -1,10 +1,41 @@
 import Link from "next/link";
 
-const legalNotes = [
-  "RTI Act, 2005 applies to central and state public authorities.",
-  "Citizens do not need to give reasons for requesting information.",
-  "Most replies are due within 30 days, or 48 hours for life and liberty matters.",
-  "First appeal goes to the First Appellate Authority within 30 days.",
+const features = [
+  {
+    title: "Plain Language Input",
+    desc: "Describe your concern naturally in English or Hindi. No legal jargon required.",
+  },
+  {
+    title: "PIO Directory",
+    desc: "Built-in addresses for Central & State authorities across India.",
+  },
+  {
+    title: "Legally Sound Formatting",
+    desc: "Drafts adhere to Section 6(1) requirements under the RTI Act, 2005.",
+  },
+  {
+    title: "Ready-to-Post PDF",
+    desc: "Export formatted A4 PDFs ready for posting with postal order or cash receipt.",
+  },
+];
+
+const faqs = [
+  {
+    q: "Who can file an RTI application?",
+    a: "Any citizen of India can file an RTI request to seek information from public authorities under Section 6(1) of the RTI Act, 2005.",
+  },
+  {
+    q: "What is the fee for an RTI application?",
+    a: "For Central Government authorities, the fee is ₹10 (payable via IPO, DD, or cash). State fees vary (commonly ₹10 to ₹50). BPL cardholders are exempt from payment upon submitting proof.",
+  },
+  {
+    q: "What is the timeline for receiving a response?",
+    a: "The Public Information Officer (PIO) must respond within 30 days of receipt. In matters involving life or liberty, information must be provided within 48 hours.",
+  },
+  {
+    q: "What if I don't receive a reply or am dissatisfied?",
+    a: "You can file a First Appeal to the First Appellate Authority (FAA) within 30 days. If still unsatisfied, a Second Appeal can be filed with the Information Commission.",
+  },
 ];
 
 export default function Home() {
@@ -30,10 +61,10 @@ export default function Home() {
                 Start RTI application
               </Link>
               <a
-                href="#accuracy"
+                href="#how-it-works"
                 className="rounded-md border border-white/30 px-6 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/10"
               >
-                View legal basics
+                How it works
               </a>
             </div>
           </div>
@@ -56,13 +87,35 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="accuracy" className="mx-auto max-w-6xl px-5 py-12 md:px-8">
-        <div className="grid gap-4 md:grid-cols-4">
-          {legalNotes.map((note) => (
-            <div key={note} className="rounded-md border border-slate-200 bg-white p-5">
-              <p className="text-sm leading-6 text-slate-700">{note}</p>
+      <section id="how-it-works" className="mx-auto max-w-6xl px-5 py-16 md:px-8">
+        <div className="text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#FF9933]">Key Features</p>
+          <h2 className="mt-2 text-3xl font-bold text-[#0F2044]">Empowering Citizens through Transparency</h2>
+        </div>
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {features.map((feat) => (
+            <div key={feat.title} className="rounded-md border border-slate-200 bg-slate-50 p-6">
+              <h3 className="text-base font-semibold text-[#0F2044]">{feat.title}</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{feat.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="border-t border-slate-200 bg-slate-50 py-16">
+        <div className="mx-auto max-w-4xl px-5 md:px-8">
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#FF9933]">Legal Guidance</p>
+            <h2 className="mt-2 text-3xl font-bold text-[#0F2044]">Frequently Asked Questions</h2>
+          </div>
+          <div className="mt-10 space-y-6">
+            {faqs.map((faq) => (
+              <div key={faq.q} className="rounded-md border border-slate-200 bg-white p-6 shadow-sm">
+                <h3 className="text-base font-semibold text-[#0F2044]">{faq.q}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-700">{faq.a}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </main>

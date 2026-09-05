@@ -66,6 +66,7 @@ export default function ApplyPage() {
           jurisdiction,
           applicantName: applicant.name,
           applicantAddress: applicant.address,
+          language,
         }),
       });
 
@@ -126,7 +127,7 @@ export default function ApplyPage() {
 
       <div className="mx-auto grid max-w-6xl gap-6 px-5 py-8 lg:grid-cols-[1fr_300px] md:px-8">
         <div className="space-y-6">
-          <StepIndicator currentStep={step} />
+          <StepIndicator currentStep={step} onStepSelect={setStep} />
           <div className="rounded-md border border-slate-200 bg-white p-5 shadow-sm md:p-7">
             {step === 1 ? (
               <Step1_UserInput

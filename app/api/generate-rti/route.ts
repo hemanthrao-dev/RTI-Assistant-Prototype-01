@@ -52,7 +52,7 @@ export async function POST(request: Request) {
           const events = await anthropic.messages.create({
             model: "claude-sonnet-4-20250514",
             max_tokens: 600,
-            system: buildRTISystemPrompt(),
+            system: buildRTISystemPrompt(completePayload.language),
             messages: [
               {
                 role: "user",
