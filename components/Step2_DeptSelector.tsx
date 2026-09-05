@@ -18,6 +18,8 @@ interface Step2Props {
   onNext: () => void;
 }
 
+import { useState } from "react";
+
 export default function Step2_DeptSelector({
   department,
   jurisdiction,
@@ -28,11 +30,19 @@ export default function Step2_DeptSelector({
   onBack,
   onNext,
 }: Step2Props) {
+  const [searchTerm, setSearchTerm] = useState("");
   const departments = getDepartmentsForJurisdiction(jurisdiction);
+  const filteredDepartments = departments.filter((d) =>
+    d.toLowerCase().includes(searchTerm.toLowerCase().trim()),
+  );
   const resolvedPIO = pio ?? getPIORecord(jurisdiction, department);
 
   function updatePIO(field: keyof PIORecord, value: string) {
     onPIOChange({ ...resolvedPIO, [field]: value });
+  }
+
+  function handleResetPIO() {
+    onPIOChange(getPIORecord(jurisdiction, department));
   }
 
   return (
@@ -66,17 +76,28 @@ export default function Step2_DeptSelector({
           </select>
         </label>
 
-        <label className="block">
-          <span className="inline-flex items-center gap-2 text-sm font-semibold text-slate-800">
-            Department
-            <span
-              tabIndex={0}
-              title={resolvedPIO.notes ?? "Pick the public authority that holds the requested records."}
-              className="inline-flex h-5 w-5 cursor-help items-center justify-center rounded-full bg-orange-100 text-xs font-bold text-[#9b4b00]"
-            >
-              ?
+        <div className="block">
+          <div className="flex items-center justify-between">
+            <span className="inline-flex items-center gap-2 text-sm font-semibold text-slate-800">
+              Department
+              <span
+                tabIndex={0}
+                title={resolvedPIO.notes ?? "Pick the public authority that holds the requested records."}
+                className="inline-flex h-5 w-5 cursor-help items-center justify-center rounded-full bg-orange-100 text-xs font-bold text-[#9b4b00]"
+              >
+                ?
+              </span>
             </span>
-          </span>
+          </div>
+          {departments.length > 5 ? (
+            <input
+              type="text"
+              placeholder="Search department..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="mt-2 mb-1 w-full rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs outline-none focus:border-[#FF9933]"
+            />
+          ) : null}
           <select
             value={department}
             onChange={(event) => {
@@ -84,20 +105,29 @@ export default function Step2_DeptSelector({
               onDepartmentChange(nextDepartment);
               onPIOChange(getPIORecord(jurisdiction, nextDepartment));
             }}
-            className="mt-2 w-full rounded-md border border-slate-300 bg-white px-3 py-3 outline-none focus:border-[#FF9933] focus:ring-4 focus:ring-orange-100"
+            className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-3 outline-none focus:border-[#FF9933] focus:ring-4 focus:ring-orange-100"
           >
-            {departments.map((item) => (
+            {filteredDepartments.map((item) => (
               <option key={item} value={item}>
                 {item}
               </option>
             ))}
           </select>
-        </label>
+        </div>
       </div>
 
       <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
         <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="font-semibold text-[#0F2044]">PIO details</h2>
+          <div className="flex items-center gap-3">
+            <h2 className="font-semibold text-[#0F2044]">PIO details</h2>
+            <button
+              type="button"
+              onClick={handleResetPIO}
+              className="text-xs text-slate-500 hover:text-[#0F2044] underline"
+            >
+              Reset to default
+            </button>
+          </div>
           <span className="text-xs font-medium uppercase tracking-[0.18em] text-slate-500">Manual override allowed</span>
         </div>
         <div className="mt-4 grid gap-4 md:grid-cols-2">

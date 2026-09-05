@@ -14,6 +14,8 @@ function wordCount(value: string) {
   return value.trim() ? value.trim().split(/\s+/).length : 0;
 }
 
+import { useState } from "react";
+
 export default function Step3_AIPreview({
   draft,
   error,
@@ -23,8 +25,16 @@ export default function Step3_AIPreview({
   onGenerate,
   onNext,
 }: Step3Props) {
+  const [copied, setCopied] = useState(false);
   const canContinue = draft.trim().length > 0 && !isGenerating;
   const encodedDraft = encodeURIComponent(draft);
+
+  async function handleCopy() {
+    if (!draft) return;
+    await navigator.clipboard.writeText(draft);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
 
   return (
     <section className="space-y-6">
@@ -88,11 +98,11 @@ export default function Step3_AIPreview({
         <div className="flex flex-col gap-3 sm:flex-row">
           <button
             type="button"
-            onClick={() => navigator.clipboard.writeText(draft)}
+            onClick={handleCopy}
             disabled={!draft}
             className="rounded-md border border-slate-300 px-5 py-3 text-sm font-semibold text-[#0F2044] transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Copy draft
+            {copied ? "Copied! ✓" : "Copy draft"}
           </button>
           <a
             href={`mailto:?subject=RTI application draft&body=${encodedDraft}`}

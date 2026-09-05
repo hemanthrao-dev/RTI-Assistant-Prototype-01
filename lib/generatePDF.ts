@@ -69,22 +69,34 @@ export function buildRTIPdf(payload: PDFPayload) {
   let y = (doc as jsPDF & { lastAutoTable?: { finalY: number } }).lastAutoTable?.finalY ?? 210;
   y += 26;
 
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const bottomMargin = 56;
+  const lineSpacing = 16.2;
+
   const bodyLines = doc.splitTextToSize(payload.body, usableWidth);
-  doc.text(bodyLines, margin, y, { lineHeightFactor: 1.35 });
-  y += bodyLines.length * 16.2 + 28;
+  for (const line of bodyLines) {
+    if (y + lineSpacing > pageHeight - bottomMargin) {
+      doc.addPage();
+      y = margin;
+    }
+    doc.text(line, margin, y);
+    y += lineSpacing;
+  }
+
+  y += 20;
 
   const footer =
     "I am willing to pay the prescribed fee. / I am a BPL cardholder (attach copy if applicable).";
   const footerLines = doc.splitTextToSize(footer, usableWidth);
-  if (y > 710) {
+  if (y + footerLines.length * lineSpacing + 80 > pageHeight - bottomMargin) {
     doc.addPage();
     y = margin;
   }
   doc.text(footerLines, margin, y, { lineHeightFactor: 1.35 });
 
-  y += footerLines.length * 16.2 + 44;
+  y += footerLines.length * lineSpacing + 40;
   doc.text("Signature: __________________________", margin, y);
-  doc.text(`Date: ${formatDate()}`, margin, y + 28);
+  doc.text(`Date: ${formatDate()}`, margin, y + 24);
 
   const fileName = `RTI_Application_${cleanFilenamePart(payload.department)}_${compactFileDate()}.pdf`;
   doc.save(fileName);
